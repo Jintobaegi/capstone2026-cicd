@@ -1,0 +1,26 @@
+# ========================================
+#  capstone2026-cicd 프로젝트 .gitignore
+# ========================================
+
+# 1. 빌드 결과물 (명령어로 다시 생성 가능하므로 제외)
+backend/target/
+frontend/build/
+frontend/node_modules/
+
+# 2. 보안 정보 (절대 올리면 안 됨!)
+application-local.yml
+.env
+*.key
+*.pem
+
+# 3. IDE 자동 생성 파일
+.idea/
+*.iml
+.vscode/
+
+# 4. 운영체제 생성 파일
+.DS_Store
+Thumbs.db
+
+# 5. Docker 로컬 설정
+docker-compose.override.yml
