@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>YJ-Capstone 로그인</title>
+</head>
+<body>
+<h2>회원 로그인(학사A-홍길동)</h2>
+<div id="login-form">
+  <input type="text" id="userId" placeholder="아이디" required><br>
+  <input type="password" id="password" placeholder="비밀번호" required><br>
+  <button type="button" onclick="handleLogin()">로그인</button>
+</div>
+
+<hr>
+
+<h2>회원가입(학사A-홍길동)</h2>
+<div id="register-form">
+  <input type="text" id="regUserId" placeholder="아이디"><br>
+  <input type="password" id="regPassword" placeholder="비밀번호"><br>
+  <input type="text" id="regName" placeholder="이름"><br>
+  <button type="button" onclick="handleRegister()">회원가입</button>
+</div>
+
+<hr>
+<a href="projectInfo.html">프로젝트 정보 확인</a><br>
+
+<script src="login.js"></script>
+</body>
+</html>
