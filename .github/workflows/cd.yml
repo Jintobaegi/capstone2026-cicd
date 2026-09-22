@@ -1,0 +1,41 @@
+# CD 파이프라인: main 브랜치에 push 되면 자동 실행
+name: CD Pipeline
+
+on:
+  push:
+    branches: [ main ]    # main에 merge 될 때만 실행
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      # 소스코드 가져오기
+      - name: 소스코드 체크아웃
+        uses: actions/checkout@v4
+
+      # Docker Hub 로그인 (Secrets 사용)
+      - name: Docker Hub 로그인
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 1. 백엔드 이미지 빌드 (태그 동시 지정)
+      - name: Backend Docker Build
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/yj-backend:${{ github.sha }} ./backend
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/yj-backend:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/yj-backend:latest
+
+      # 2. 프런트엔드 이미지 빌드 (태그 동시 지정) - 이 부분이 누락되어 에러가 났었습니다.
+      - name: Frontend Docker Build
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/yj-frontend:${{ github.sha }} ./frontend
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/yj-frontend:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/yj-frontend:latest
+
+      # 3. Docker Hub에 Push
+      - name: Docker Hub Push
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/yj-backend:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/yj-backend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/yj-frontend:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/yj-frontend:latest
